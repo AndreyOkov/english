@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Words;
 use Yii;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -126,8 +127,16 @@ class SiteController extends Controller
 
     public function actionWords()
     {
-        $words = Words::find()->asArray()->all();
-        return $this->render('words',
-            ['words' => $words]);
+        $words = Words::find();
+        $pagination = new Pagination([
+            'defaultPageSize' => 4,
+            'totalCount' => $words->count()
+        ]);
+
+        $words = $words->offset($pagination->offset)->limit($pagination->limit)->all();
+        return $this->render('words', [
+            'words' => $words,
+            'pagination' => $pagination
+        ]);
     }
 }
