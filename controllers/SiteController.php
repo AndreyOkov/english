@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Words;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -121,5 +122,12 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionWords()
+    {
+        $words = Words::find()->asArray()->all();
+        return $this->render('words',
+            ['words' => $words]);
     }
 }
